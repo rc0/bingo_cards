@@ -3,9 +3,11 @@ import generate
 import cairo
 import time
 
+start_time = int(time.time())
+
 W = (210 / 25.4) * 72
 H = (297 / 25.4) * 72
-surface = cairo.PDFSurface("bingo_cards.pdf", W, H)
+surface = cairo.PDFSurface(f"output/cards_{start_time:d}.pdf", W, H)
 cx = cairo.Context(surface)
 pt_mm = 72 / 25.4
 cx.scale(pt_mm, pt_mm)
@@ -31,9 +33,7 @@ deltay = -7
 
 label_sep = 1.0
 
-start_time = int(time.time())
-
-for page in range(20):
+for page in range(6):
     cx.set_font_face(the_face)
     cx.set_font_size(4)
     cx.move_to(page_number_x, page_number_y)
@@ -41,7 +41,6 @@ for page in range(20):
     for bank in [0,1]:
         cx.set_font_face(the_face)
         cx.set_font_size(6)
-        #foo = ((start_time + page * 2 + bank) * 2654435769) & 0xffffffff
         foo = (1000 + (page * 2) + bank)
         seed = [start_time, foo]
         cards = generate.generate_cards(seed)
